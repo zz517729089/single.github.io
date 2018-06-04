@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>事件绑定与监听</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+  <body>
+  	<div  id="element">
+  		<button @click="say($event)">click</button>
+  		<!--修饰符   .self修饰符只在触发它本身的时候才回调  .stop阻止事件冒泡 -->
+	  	<div @click="saySelf('click form inner')" @click.self="saySelf('click form self')">
+	  		<button @click="saySelf('button click')">button</button>
+	  		<button @click.stop="saySelf('just button click')">button</button>
+	  	</div>
+	  	<!-- 按键修饰符-->
+	  	<input type="text" name="" @keyup.enter="say($event)">
+	  	<input type="text" name="" @keyup.right="move($event)">
+  	</div>
+ </body>
+   <script>
+   	var vm = new Vue({
+   		el:"#element",
+   		data:{
+   			message:"hello VUE~"
+   		},
+   		methods:{
+   			say:function(ev){
+   				console.log(ev);
+   				alert(this.message);
+   			},
+   			saySelf:function(msg){
+   				alert(msg);
+   			},
+   			move:function(ev){
+   				console.log(ev.target.offsetLeft);
+   			}
+   		}
+   	})
+   </script>
+</html>

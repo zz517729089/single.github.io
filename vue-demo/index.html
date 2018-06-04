@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>VUE</title>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.min.js"></script>
+</head>
+<body>
+	<div id="app">
+		{{message}}
+	</div>
+</body>
+  <script type="text/javascript">
+  	var vm =  new Vue({
+  		el:"#app",
+  		data:{ 
+  			message:"thi is vue"
+  		},
+  		init:function(){
+                                     console.log("在实例开始初始化时同步调用~");
+  		},
+  		created:function(){
+  			console.log("在VUE初始实例之后调用~");
+  		}，
+  		beforCompiled:function(){
+  			console.log("在DOM编译前调用~");
+  		},
+  		Compiled:function(){
+  			console.log("在DOM编译结束时调用~");
+  		},
+  		
+  		beforDestroy:function(){
+  			console.log("在开始销毁实例时调用~");
+  		},
+  		destroyed:function(){
+  			console.log("在实例销毁之后调用~");
+  		}
+  	})
+  </script>
+</html>

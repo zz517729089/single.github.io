@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>组件</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		<my-commpoent :a="message"></my-commpoent>
+		<my-parent :b="obj"></my-parent>
+		parent component:<input type="text" v-model="msg">
+		child  component:<msg-child :msg.once="msg"></msg-child>
+	</div>
+</body>
+<script type="text/javascript">
+	//全局注册
+	var myCommpoent = Vue.extend({
+		props:["a"],
+		template:'<p>{{a}}</p>'
+	})
+	//局部注册
+	var parent = Vue.extend({
+		props:["b"],
+		template:"<ul><child :val='b'></child></ul>",
+		components:{
+			'child':{
+				props:['val'],
+				template:"<li>{{val.name}}{{val.age}}</li>"
+			}
+		}
+	})
+	Vue.component("msg-child",{
+		props:["msg"],
+		template:"<input type='text' v-model='msg'>"
+	})
+	Vue.component("my-commpoent",myCommpoent);
+	Vue.component("my-parent",parent);
+	var vm = new Vue({
+		el:"#app",
+		data:{
+                               message:"this is prop",
+                               obj:{name:"ss",age:10},
+                               msg:""
+		}
+	})
+</script>
+</html>

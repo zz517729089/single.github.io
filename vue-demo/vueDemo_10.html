@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>vue-router</title>
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+            <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script> 
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+	<div id='app'>
+		<nav class='navbar navbar-inverse'>
+			<div class='container'>
+				<div class='collapse navbar-collapse'>
+					<ul class='nav navbar-nav'>
+					    <li>
+					    	<router-link to='/home'>
+					    		HOME
+					    	</router-link>
+					    </li>
+					    <li>
+					    	<router-link to='/list'>
+					    		LIST
+					    	</router-link>
+					    </li>
+					    <li>
+					    	<router-link to='/user/bar'>
+					    		BAR
+					    	</router-link>
+					    </li>
+					     <!-- 嵌套路由 -->
+					     <li>
+					    	<router-link to='/user/bar/profile'>
+					    		Profile
+					    	</router-link>
+					    </li>
+					    <li>
+					    	<router-link to='/user/bar/posts'>
+					    		posts
+					    	</router-link>
+					    </li>
+					     <li>
+					     	<!-- 通过路由名和参数跳转路径 -->
+					    	<router-link :to="{name:'user',params:{userName:'bar'}}">
+					    		toBAR
+					    	</router-link>
+					    </li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+			<div class='container'>
+				 <router-view></router-view>
+			</div>
+	</div>
+</body>
+  <script type="text/javascript">
+  	//定义路由组件，可以是import进来的
+  	const Home = { template:"<div>this is the home page</div>" };
+  	const List = { 
+  		template:"<div>\
+  		this is the list page\
+  		<router-link to='viewName'>\
+  		   viewName\
+  		</router-link>\
+  		<router-view></router-view>\
+  		<router-view name='kal'></router-view>\
+  		</div>" 
+  	};
+  	const User = {
+  		  template:"<div class='user'>\
+  		  User{{$route.params.userName}}\
+  		  <router-view></router-view>\
+  		  </div>"
+  		 /* beforeRouteUpdate(to,from,next){
+                                console.log("路由变化了~");
+  		   }*/
+  		};
+            const UserProfile = { template:"<div>this is a Profile page</div>" };
+            const UserPosts = { template:"<div>this is a Posts page</div>" };
+             const A = {template:"<div>this is a A page</div>" }
+             const B= {template:"<div>this is a B page</div>" }
+  	//定义路由选项
+  	const routes = [
+  	                {
+             	   	path:'/home',
+             	   	component:Home
+             	   },
+             	   {
+             	   	path:'/list',
+             	   	component:List
+             	   },
+             	   {
+             	   	//设置动态路径参数，以冒号开头，可以设置多段路径参数如：/user/:username/post/:post_id
+             	   	path:'/user/:userName',
+             	   	component:User,
+             	   	name:'user',
+             	   	children:[
+             	   	  {
+             	   	  	path:"profile",
+             	   	  	component:UserProfile
+             	   	  },
+             	   	  {
+             	   	  	path:"posts",
+             	   	  	component:UserPosts
+             	   	  }
+             	   	]
+             	   },
+             	   {
+             	   	path:'/viewName',
+             	   	components:{
+                                                default:A,
+                                                kal:B
+             	   	}
+             	   }
+  	]
+             //创建路由器实例
+             const router = new VueRouter({
+             	routes
+             });
+             //默认页面
+             router.push('/home');
+             //创建和挂载根实例
+            const app = new Vue({
+            	    router
+            }).$mount('#app');
+  </script>
+</html>

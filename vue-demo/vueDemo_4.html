@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>自定义指令</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+	<div id="diyDirective">
+		<div v-if="isExist" v-my-directive="param"></div>
+		<div v-my-advice-directive  a="paramA"></div>
+	</div>
+</body>
+ <script type="text/javascript">
+ 	//自定义指令的三个钩子函数
+ 	Vue.directive("my-directive",{
+ 		bind:function(){
+ 			console.log('bind',arguments);
+ 		},
+ 		update:function(newValue,oldValue){
+ 			console.log('update',newValue,oldValue);
+ 		},
+ 		unbind:function(){
+ 			console.log('unbind',arguments);
+ 		}
+ 	});
+ 	Vue.directive("my-advice-directive",{
+ 		params:['a'],	
+ 		bind:function(){
+ 			console.log('params',this.params);
+ 		}
+ 	})
+ 	var vm = new Vue({
+ 		el:"#diyDirective",
+ 		data:{
+ 			isExist:true,
+ 			param:"first"
+ 		}
+ 	})
+ </script>
+</html>

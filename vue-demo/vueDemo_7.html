@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>组件间通信</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		<child-todo name="one">
+			{{title}}<child-first></child-first>
+		</child-todo>
+		<child-todo v-ref:"first" name="two"></child-todo>
+		<ul>
+		  <li v-for="value in todo">
+		  	{{value}}
+		  </li>
+		</ul>
+	</div>
+</body>
+  <script type="text/javascript">
+            Vue.component("child-todo",{
+            	     props:['name'],
+            	     data:function(){
+            	     	return {
+            	     	      content:'',
+            	     	      title:this.$refs.first
+            	     	}
+            	     },
+            	     template:"<div>child{{name}}<input type='text' v-model='content'/> <button @click='add'>添加</button></div>",
+            	     methods:{ },
+            	    components:{
+            	    	'child-first':{
+            	    		data:function(){
+            	    	                 return {
+            	    	                 	obj:"ss"
+            	    	                 }
+            	    		},
+            	    		template:"<p>{{ss}}</p>"
+            	    	}
+            	    }
+            })
+  	var vm = new Vue({
+  		el:"#app",
+  		data:{
+                               content:'',
+                               todo:[]
+  		},
+  		methods:{
+  		}
+  	})
+  </script>
+</html>

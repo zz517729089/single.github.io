@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>内置指令</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<style type="text/css">
+		[v-cloak]{display: none;}
+	</style>
+</head>
+<body>
+	<div id="directive">
+		<img :style="imgStyle" :src="imgSrc" alt="git">
+		<input type="text" name="" v-model.trim="userName" placeholder="your name">
+		{{userName}}
+		<select v-model="form" multiple>
+			<option name="湖北" value="1">湖北</option>
+			<option name="湖南" value="2">湖南</option>
+			<option name="河北" value="3">河北</option>
+			<option name="河南" value="4">河南</option>
+		</select>
+		{{form}}
+                        <div>
+                        	      <p  v-for="(value,index) in arrs" :key="value.id">{{index}}-{{value.id}}-{{value.title}}</p>
+                        </div>
+                        <span v-html="msg"></span>
+                        <!-- <span v-el:getDom>this is span</span> -->
+                        <span :value="span"></span>
+                        <gethtml ref:title content="message">11</gethtml>
+                        <!-- prop传递数据 -->
+                        <div>
+                        	       <input type="text" v-model="account" >
+                        	       <br>
+                        	       <child-account  :my-account="account"></child-account>
+                        </div>
+                        <!-- prop绑定对象-->
+                        <ol>
+                        	    <li-object v-bind="arrs" v-for="(value,index) in arrs"></li-object>
+                        </ol>
+                        <div v-pre>{{msg}}</div>
+                        <div v-cloak>{{msg}}</div>
+	</div>
+</body>
+ <script type="text/javascript">
+ 	//注册组件
+ 	var gethtml = Vue.extend({
+ 		props:["content"],
+ 		template:"<h1>{{content}}</h1>"
+ 	});
+ 	var childAccount = Vue.extend({
+ 		props:["myAccount"],
+ 		template:"<span>{{myAccount}}</span>"
+ 	});
+ 	var liObject = Vue.extend({
+ 		props:["arrs"],
+ 		template:"<li></li>"
+ 	})
+ 	Vue.component("gethtml",gethtml);
+ 	Vue.component("child-account",childAccount);
+ 	Vue.component("li-object",liObject);
+ 	var vm = new Vue({
+ 		el:"#directive",
+ 		data:{
+ 		    imgSrc:"file:///C:/Users/pact.PACT-20170616CE/Desktop/git.png",
+ 		    imgStyle:{
+ 		    	width:"200px",
+ 		    	height:"200px"
+ 		    },
+ 		    userName:"",
+ 		    form:[],
+ 		    arrs:[
+ 		      {id:1,title:"book"},
+ 		      {id:2,title:"foot"},
+ 		      {id:3,title:"game"},
+ 		      {id:4,title:"TV"}
+ 		    ],
+ 		    msg:"directive",
+                             span:"",
+                             account:"张飞"
+ 		}
+ 	});
+ 	console.log(vm);
+ 	/*vm.span = vm.$els.getdom.innerHTML;*/
+ </script>
+</html>

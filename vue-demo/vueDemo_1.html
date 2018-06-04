@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>vue</title>
+	<style type="text/css">
+		.active{font-size: 25px;color: green;}
+		.unactive{font-size: 12px;color:red;}
+	</style>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		<span v-if="inner" v-bind:class="{'active':active,'unactive':!active}">{{message}}</span>
+		<span v-once v-bind:class="['active',!active?'unactive':'']">hello{{userName | uppercase}}</span><br>
+		<input type="text" placeholder="your name" v-model="userName">
+		<input type="button" value="clik me"  @click.stop="message++" ><br>
+		<input type="radio" value="man" v-model="gender" name="sex">男<br>
+		<input type="radio" value="women" v-model="gender" name="sex">女<br>
+		{{gender}}
+		<input type="checkbox" value="1" v-model="multiChecked">
+		<input type="checkbox" value="2" v-model="multiChecked">
+		<input type="checkbox" value="3" v-model="multiChecked">
+		<p v-show="inner" v-bind:style="pStyle">{{multiChecked.join(',')}}</p>
+		<ul>
+		    <li v-for='(item,index) in nums'>
+		    	{{index}}-{{item.title}}
+		    </li>
+		</ul>
+		<ol>
+		    <li v-for='(value,key,index) in pStyle'>
+		    	 {{index}}-{{key}}-{{value}}
+		    </li>
+		</ol>
+		<template v-if="active" v-for="obj in nums">
+		   <p>{{obj.title}}</p>
+		   <p>{{obj.foot}}</p>
+		</template>
+	</div>
+</body>
+  <script type="text/javascript">
+  	 var vm = new Vue({
+  	 	el:"#app",
+  	 	data:{
+                              userName:"zhangsan",
+                              message:0,
+                              gender:"",
+                              multiChecked:[],
+                              active:false,
+                              pStyle:{
+                              	fontSize:"18px",
+                              	color:"blue"
+                              },
+                              inner:true,
+                              nums:[
+                                  {title:'monkey',foot:'banana'},
+                                  {title:'cat',foot:'mouse'},
+                                  {title:'dog',foot:'shit'}
+                              ]
+  	 	},
+  	 	filters:{
+  	 	     uppercase:function(val){
+  	 	     	if(!val) return ""
+  	 	     	val = val.toString();
+  	 	             return val.toUpperCase()
+  	 	     }
+  	 	},
+  	 	//计算属性
+  	 	computed:{
+                             
+  	 	}
+  	 })
+  	 vm.$set(vm.nums,0,{title:"sheep",foot:"anyting"});    //x响应式修改数组元素的值
+  	 vm.nums.splice(5)
+  </script>
+</html>

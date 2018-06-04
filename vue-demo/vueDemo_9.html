@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>动态组件</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script> 
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+	<div id="app">
+		<ul>
+		       <li @click="tab('home')">home</li>
+		       <li @click="tab('List')">List</li>
+		       <li @click="tab('detail')">detail</li>
+		</ul>
+		<keep-alive>
+			<component :is="currentView"></component>
+		</keep-alive>
+		<comp-a></comp-a>
+		<comp-b></comp-b>
+	</div>
+</body>
+  <script type="text/javascript">
+  	var bus = new Vue();
+  	var vm = new Vue({
+  		el:"#app",
+  		data:{
+                                 currentView:'home'
+  		},
+  		methods:{
+  		         tab:function(a){
+  		         	   this.currentView = a;
+  		         }	
+  		},
+  		components:{
+  			home:{
+  				template:"<div>\
+  				  <p>home</p>\
+  				  <ul>\
+  				   <li v-for='item in items'>{{item}}</li>\
+  				  </ul>\
+  				</div>",
+  				data:function(){
+  					return {
+  						items:[]
+  					}
+  				},
+  				ready:function(){
+  					console.log('feth data');
+  					this.items = [1,2,3,4,5]
+  				}
+  			},
+  			List:{template:"<div>List</div>"},
+  			detail:{template:"<div>detail</div>"},
+  			compA:{
+  				template:"<div>\
+  				    <input type='text' v-model='name'/>\
+  				    <button @click='create'>添加</button>\
+  				</div>",
+  				data:function(){
+  					return {
+  						name:""
+  					}
+  				},
+  				methods:{
+  					create:function(){
+  						bus.$emit('create',{name:this.name});
+  						this.name = '';
+  					}
+  				}
+  			},
+  			compB:{
+  				template:"<ul>\
+  				   <li v-for='item in items'>{{item.name}}</li>\
+  				</ul>",
+  				data:function(){
+  					return {
+  						items:[]
+  					}
+  				},
+  				mounted(){
+  					var that = this;
+                                                              bus.$on('create',function(data){
+                                                              	   that.items.push(data);
+                                                              })
+  				}
+  			}
+  		}
+  	})
+  </script>
+</html>

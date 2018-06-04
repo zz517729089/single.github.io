@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>过滤器</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+	<div id="filter">
+		<div>{{date | date('yyyy-MM-dd  hh:mm:ss')}}</div>
+	</div>
+</body>
+<script type="text/javascript">
+	Vue.filter('date',function(value,format){
+                   var o = {
+                   	"M+":value.getMonth()+1,
+                   	"d+":value.getDate(),
+                   	"h+":value.getHours(),
+                   	"m+":value.getMinutes(),
+                   	"s+":value.getSeconds()
+                   }
+                   if(/(y+)/.test(format))
+                   	format = format.replace(RegExp.$1,(value.getFullYear()+"").substr(4-RegExp.$1.length));
+                   	for(var k in o)
+                   		   if(new RegExp("(" + k + ")").test(format))
+                   		    format = format.replace(RegExp.$1,(RegExp.$1.length == 1))?(o[k]):(("00" + o[k]).substr(("" + o[k]).length))        
+                           return format;
+	})
+	var vm = new Vue({
+		el:"#filter",
+		data:{
+			date:new Date()
+		}
+	})
+</script>
+</html>
